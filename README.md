@@ -1,2 +1,2 @@
 # astra-sdk-js
-Astra SDK for JavaScript in the browser and Node.js
+Astra user management SDK for JavaScript in the browser and Node.js
