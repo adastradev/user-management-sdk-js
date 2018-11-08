@@ -35,6 +35,10 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+.nyc_output/
+coverage/
+jspm_packages/
+typings/
 
 # TypeScript v1 declaration files
 typings/
