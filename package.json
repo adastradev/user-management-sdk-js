@@ -1,0 +1,25 @@
+{
+  "name": "@adastradev/user-management-sdk",
+  "version": "1.0.0",
+  "description": "Astra user management SDK for JavaScript in the browser and Node.js",
+  "main": "dist/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha -r ts-node/register test/integration/**/*.spec.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adastradev/user-management-sdk-js.git"
+  },
+  "author": "Ad Astra",
+  "contributors": [
+    "Andrew Regier <aregier@regiernet.com>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adastradev/user-management-sdk-js/issues"
+  },
+  "homepage": "https://github.com/adastradev/user-management-sdk-js#readme"
+}
