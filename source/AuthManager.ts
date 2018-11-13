@@ -1,38 +1,27 @@
-import 'reflect-metadata';
 import { ICognitoUserPoolLocator } from './ICognitoUserPoolLocator';
 import * as AWS from 'aws-sdk';
 import { ICognitoUserPoolApiModel } from './ICognitoUserPoolApiModel';
 import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserSession } from 'amazon-cognito-identity-js';
-import { inject, injectable } from 'inversify';
-import TYPES from '../../ioc.types';
-import { Logger } from 'winston';
 
-// tslint:disable-next-line:no-string-literal no-var-requires
-global['fetch'] = require('node-fetch');
-
-@injectable()
 export class AuthManager {
     private locator: ICognitoUserPoolLocator;
     private poolData: ICognitoUserPoolApiModel;
     private region: string;
     private cognitoUser: CognitoUser;
     private cognitoUserSession: CognitoUserSession;
-    private logger: Logger;
 
     constructor(
         locator: ICognitoUserPoolLocator,
-        region: string,
-        @inject(TYPES.Logger) logger: Logger
+        region: string
     ) {
         this.locator = locator;
         this.region = region;
-        this.logger = logger;
     }
 
     public signIn(email: string, password: string, newPassword: string = ''): Promise<CognitoUserSession> {
         return new Promise(async function (resolve, reject) {
             // get the pool data from the response
-            this.logger.debug(`Signing into AWS Cognito`);
+            console.log(`Signing into AWS Cognito`);
             this.poolData = await this.locator.getPoolForUsername(email);
 
             // construct a user pool object
@@ -78,11 +67,11 @@ export class AuthManager {
             if (cognitoIdentityCredentials.needsRefresh()) {
                 const authenticator = `cognito-idp.${this.region}.amazonaws.com/${this.poolData.UserPoolId}`;
                 const that = this;
-                this.logger.debug('Refreshing Cognito credentials');
+                console.log('Refreshing Cognito credentials');
                 // tslint:disable-next-line:max-line-length
                 this.cognitoUser.refreshSession(this.cognitoUserSession.getRefreshToken(), (refreshCognitoErr, newSession) => {
                     if (refreshCognitoErr) {
-                        this.logger.error(refreshCognitoErr);
+                        console.log(refreshCognitoErr);
                         reject(refreshCognitoErr);
                     } else {
                         that.cognitoUserSession = newSession;
@@ -90,10 +79,10 @@ export class AuthManager {
                         cognitoIdentityCredentials.params['Logins'][authenticator]  = newSession.getIdToken().getJwtToken();
                         cognitoIdentityCredentials.refresh((refreshIamErr) => {
                             if (refreshIamErr) {
-                                this.logger.error(refreshIamErr);
+                                console.log(refreshIamErr);
                                 reject(refreshIamErr);
                             } else {
-                                this.logger.info('Cognito token successfully updated');
+                                console.log('Cognito token successfully updated');
                                 resolve(true);
                             }
                         });

@@ -1,14 +1,9 @@
 
-import 'reflect-metadata';
 import * as chai from 'chai';
 import sinon = require('sinon');
 import { stubInterface } from 'ts-sinon';
-import container from './test.inversify.config';
-import { AuthManager } from '../../source/astra-sdk/AuthManager';
-import { ICognitoUserPoolLocator } from '../../source/astra-sdk/ICognitoUserPoolLocator';
-import { ICognitoUserPoolApiModel } from '../../source/astra-sdk/ICognitoUserPoolApiModel';
-import { Logger } from 'winston';
-import TYPES from '../../ioc.types';
+import { AuthManager } from '../../source/AuthManager';
+import { ICognitoUserPoolLocator } from '../../source/ICognitoUserPoolLocator';
 import {
     AuthenticationDetails,
     CognitoUser,
@@ -50,9 +45,7 @@ describe('AuthManager', () => {
             const authenticateUserStub = sandbox.stub(CognitoUser.prototype, 'authenticateUser')
                 .callsFake(authenticateUserSpy);
 
-            const logger: Logger = container.get<Logger>(TYPES.Logger);
-
-            const authManager = new AuthManager(locatorStub, 'us-east-1', logger);
+            const authManager = new AuthManager(locatorStub, 'us-east-1');
             const session = await authManager.signIn('user@aais.com', '12345');
             expect(authenticateUserStub.calledOnce).to.be.true;
             expect(session.isValid()).to.be.true;
