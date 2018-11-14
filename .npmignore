@@ -4,3 +4,4 @@ config.ts
 .vscode
 tsconfig.json
 tslint.json
+node_modules
