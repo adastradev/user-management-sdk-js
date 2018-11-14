@@ -11,14 +11,16 @@ pipelines:
       - step:
           script:
             - npm install
+            - npm run build
             - npm test
 
             # Publish package
             - npm publish --access=public
-         
+
     feature/*:
       - step:
           script:
             - npm install
+            - npm run build
             - npm test
 
