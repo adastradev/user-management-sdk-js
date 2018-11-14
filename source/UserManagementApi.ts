@@ -59,7 +59,7 @@ export class UserManagementApi {
         return this.apigClient.invokeApi(params, pathTemplate, method, additionalParams, body);
     }
 
-    public deleteUserPool(id) {
+    public deleteUserPool(id: string) {
         const params = {};
         const pathTemplate = '/admin/userpools/' + id;
         const method = 'DELETE';
@@ -79,7 +79,7 @@ export class UserManagementApi {
         return this.apigClient.invokeApi(params, pathTemplate, method, this.additionalParams, body);
     }
 
-    public createUser(tenant_id, userName, password, firstName, lastName) {
+    public createUser(tenant_id: string, userName: string, password: string, firstName: string, lastName: string) {
         const params = {};
         const pathTemplate = '/admin/users';
         const method = 'POST';
@@ -89,7 +89,7 @@ export class UserManagementApi {
         return this.apigClient.invokeApi(params, pathTemplate, method, additionalParams, body);
     }
 
-    public registerTenant(tenantName, userName, firstName, lastName) {
+    public registerTenant(tenantName: string, userName: string, firstName: string, lastName: string) {
         const params = {};
         const pathTemplate = '/tenant/register';
         const method = 'POST';
@@ -99,7 +99,7 @@ export class UserManagementApi {
         return this.apigClient.invokeApi(params, pathTemplate, method, additionalParams, body);
     }
 
-    public deleteUser(userName) {
+    public deleteUser(userName: string) {
         const params = {};
         const pathTemplate = '/admin/users/' + encodeURIComponent(userName);
         const method = 'DELETE';
@@ -109,7 +109,7 @@ export class UserManagementApi {
         return this.apigClient.invokeApi(params, pathTemplate, method, additionalParams, body);
     }
 
-    public getUserPoolByUserName(userName): Promise<{}> {
+    public getUserPoolByUserName(userName: string): Promise<{}> {
         const params = {};
         const pathTemplate = '/users/' + encodeURIComponent(userName) + '/pool';
         const method = 'GET';
@@ -119,7 +119,7 @@ export class UserManagementApi {
         return this.apigClient.invokeApi(params, pathTemplate, method, additionalParams, body);
     }
 
-    public getUserInfo(userName) {
+    public getUserInfo(userName: string) {
         const params = {};
         const pathTemplate = '/users/' + encodeURIComponent(userName) + '/info';
         const method = 'GET';
@@ -129,7 +129,7 @@ export class UserManagementApi {
         return this.apigClient.invokeApi(params, pathTemplate, method, this.additionalParams, body);
     }
 
-    public getUsers(firstNameSearch) { // eslint-disable-line
+    public getUsers(firstNameSearch: string) { // eslint-disable-line
         // TODO: implement search parameters
         const params = {};
         const pathTemplate = '/users';

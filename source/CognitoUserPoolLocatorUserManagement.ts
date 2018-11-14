@@ -2,11 +2,12 @@ import { ICognitoUserPoolLocator } from './ICognitoUserPoolLocator';
 import { UserManagementApi } from './UserManagementApi';
 import { ICognitoUserPoolApiModel } from './ICognitoUserPoolApiModel';
 
+/**
+ * Locates a cognito user pool appropriate for a given username via REST lookup against the
+ * user management api
+ */
 export class CognitoUserPoolLocatorUserManagement implements ICognitoUserPoolLocator {
-    private region: string;
-
-    constructor(region: string) {
-        this.region = region;
+    constructor(private region: string) {
     }
 
     public getPoolForUsername(userName: string): Promise<ICognitoUserPoolApiModel> {
