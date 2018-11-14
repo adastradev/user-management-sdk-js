@@ -52,11 +52,29 @@ export class AuthManager {
                     reject(err);
                 },
                 mfaRequired(codeDeliveryDetails) { // eslint-disable-line
-                    // MFA is Disabled for this QuickStart.
-                    reject(Error('Multi-factor auth is not currently supported in this agent'));
+                    reject(Error('Multi-factor auth is not currently supported'));
                 },
                 newPasswordRequired(userAttributes, requiredAttributes) { // eslint-disable-line
-                    reject(Error('New password is required for this user'));
+                    if (newPassword !== undefined && newPassword.length > 0) {
+                        // User was signed up by an admin and must provide new
+                        // password and required attributes
+
+                        // These attributes are not mutable and should be removed from map.
+                        delete userAttributes.email_verified;
+                        delete userAttributes['custom:tenant_id'];
+                        that.cognitoUser.completeNewPasswordChallenge(newPassword, userAttributes, {
+                            onSuccess: function (result) {
+                                that.cognitoUserSession = result;
+                                resolve(result);
+                            },
+                            onFailure: function(err) {
+                                reject(err);
+                            }
+                        });
+                    }
+                    else {
+                        reject(Error('New password is required for the user'));
+                    }
                 }
             });
         }.bind(this));
