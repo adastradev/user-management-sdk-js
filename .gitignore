@@ -33,8 +33,14 @@ bower_components
 build/Release
 
 # Dependency directories
+.vscode
+dist
 node_modules/
 jspm_packages/
+.nyc_output/
+coverage/
+jspm_packages/
+typings/
 
 # TypeScript v1 declaration files
 typings/
