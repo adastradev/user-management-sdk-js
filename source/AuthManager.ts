@@ -16,6 +16,7 @@ export class AuthManager {
     ) {
         this.locator = locator;
         this.region = region;
+        AWS.config.region = region;
     }
 
     public signIn(email: string, password: string, newPassword: string = ''): Promise<CognitoUserSession> {
