@@ -1,6 +1,6 @@
 {
   "name": "@adastradev/user-management-sdk",
-  "version": "1.0.3-beta.1",
+  "version": "1.0.3",
   "description": "Astra user management SDK for JavaScript in the browser and Node.js",
   "main": "dist/index.js",
   "scripts": {
@@ -27,7 +27,8 @@
     "amazon-cognito-identity-js": "^3.0.3",
     "aws-api-gateway-client": "git+https://github.com/aregier/aws-api-gateway-client.git#issue/67",
     "aws-sdk": "^2.354.0",
-    "axios": "^0.19.0-beta.1"
+    "axios": "^0.19.0-beta.1",
+    "proxy-agent": "^3.0.3"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",

@@ -2,6 +2,22 @@ import { ICognitoUserPoolLocator } from './ICognitoUserPoolLocator';
 import * as AWS from 'aws-sdk';
 import { ICognitoUserPoolApiModel } from './ICognitoUserPoolApiModel';
 import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserSession } from 'amazon-cognito-identity-js';
+import proxy = require('proxy-agent');
+import { GlobalConfigInstance } from 'aws-sdk/lib/config';
+
+export function configureAwsProxy(awsConfig: GlobalConfigInstance) {
+    if (process.env.HTTP_PROXY || process.env.HTTPS_PROXY) {
+        // TODO: does AWS support multiple proxy protocols simultaneously (HTTP and HTTPS proxy)
+        // For now, this prefers HTTPS over HTTP proxy protocol for HTTPS requests
+        let proxyUri = process.env.HTTP_PROXY;
+        if (proxyUri === undefined) {
+            proxyUri = process.env.HTTPS_PROXY;
+        }
+        awsConfig.update({
+            httpOptions: { agent: proxy(proxyUri) }
+        });
+    }
+}
 
 export class AuthManager {
     private locator: ICognitoUserPoolLocator;
@@ -17,6 +33,8 @@ export class AuthManager {
     ) {
         this.locator = locator;
         this.region = region;
+        // AWS module configuration
+        configureAwsProxy(AWS.config);
         AWS.config.region = region;
     }
 
