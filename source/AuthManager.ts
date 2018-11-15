@@ -9,6 +9,7 @@ export class AuthManager {
     private region: string;
     private cognitoUser: CognitoUser;
     private cognitoUserSession: CognitoUserSession;
+    private iamCredentials: AWS.CognitoIdentityCredentials;
 
     constructor(
         locator: ICognitoUserPoolLocator,
@@ -71,8 +72,7 @@ export class AuthManager {
                                 reject(err);
                             }
                         });
-                    }
-                    else {
+                    } else {
                         reject(Error('New password is required for the user'));
                     }
                 }
@@ -82,8 +82,7 @@ export class AuthManager {
 
     public refreshCognitoCredentials() {
         return new Promise(async function (resolve, reject) {
-            const cognitoIdentityCredentials = AWS.config.credentials as AWS.CognitoIdentityCredentials;
-            if (cognitoIdentityCredentials.needsRefresh()) {
+            if (this.iamCredentials.needsRefresh()) {
                 const authenticator = `cognito-idp.${this.region}.amazonaws.com/${this.poolData.UserPoolId}`;
                 const that = this;
                 console.log('Refreshing Cognito credentials');
@@ -95,8 +94,8 @@ export class AuthManager {
                     } else {
                         that.cognitoUserSession = newSession;
                         // tslint:disable-next-line:no-string-literal max-line-length
-                        cognitoIdentityCredentials.params['Logins'][authenticator]  = newSession.getIdToken().getJwtToken();
-                        cognitoIdentityCredentials.refresh((refreshIamErr) => {
+                        this.iamCredentials.params['Logins'][authenticator]  = newSession.getIdToken().getJwtToken();
+                        this.iamCredentials.refresh((refreshIamErr) => {
                             if (refreshIamErr) {
                                 console.log(refreshIamErr);
                                 reject(refreshIamErr);
@@ -112,16 +111,16 @@ export class AuthManager {
         }.bind(this));
     }
 
-    public configureIamCredentials() {
+    public getIamCredentials(): Promise<AWS.CognitoIdentityCredentials> {
         return new Promise(async function (resolve, reject) {
             const authenticator = `cognito-idp.${this.region}.amazonaws.com/${this.poolData.UserPoolId}`;
-            AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+            this.iamCredentials = new AWS.CognitoIdentityCredentials({
                 IdentityPoolId : this.poolData.IdentityPoolId,
                 Logins : {
                     [authenticator] : this.cognitoUserSession.getIdToken().getJwtToken()
                 }
             });
-            resolve(true);
+            resolve(this.iamCredentials);
         }.bind(this));
     }
 }
