@@ -2,6 +2,22 @@ import { ICognitoUserPoolLocator } from './ICognitoUserPoolLocator';
 import * as AWS from 'aws-sdk';
 import { ICognitoUserPoolApiModel } from './ICognitoUserPoolApiModel';
 import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserSession } from 'amazon-cognito-identity-js';
+import proxy = require('proxy-agent');
+import { GlobalConfigInstance } from 'aws-sdk/lib/config';
+
+export function configureAwsProxy(awsConfig: GlobalConfigInstance) {
+    if (process.env.HTTP_PROXY || process.env.HTTPS_PROXY) {
+        // TODO: does AWS support multiple proxy protocols simultaneously (HTTP and HTTPS proxy)
+        // For now, this prefers HTTPS over HTTP proxy protocol for HTTPS requests
+        let proxyUri = process.env.HTTP_PROXY;
+        if (proxyUri === undefined) {
+            proxyUri = process.env.HTTPS_PROXY;
+        }
+        awsConfig.update({
+            httpOptions: { agent: proxy(proxyUri) }
+        });
+    }
+}
 
 export class AuthManager {
     private locator: ICognitoUserPoolLocator;
@@ -9,6 +25,7 @@ export class AuthManager {
     private region: string;
     private cognitoUser: CognitoUser;
     private cognitoUserSession: CognitoUserSession;
+    private iamCredentials: AWS.CognitoIdentityCredentials;
 
     constructor(
         locator: ICognitoUserPoolLocator,
@@ -16,6 +33,8 @@ export class AuthManager {
     ) {
         this.locator = locator;
         this.region = region;
+        // AWS module configuration
+        configureAwsProxy(AWS.config);
         AWS.config.region = region;
     }
 
@@ -71,8 +90,7 @@ export class AuthManager {
                                 reject(err);
                             }
                         });
-                    }
-                    else {
+                    } else {
                         reject(Error('New password is required for the user'));
                     }
                 }
@@ -82,8 +100,7 @@ export class AuthManager {
 
     public refreshCognitoCredentials() {
         return new Promise(async function (resolve, reject) {
-            const cognitoIdentityCredentials = AWS.config.credentials as AWS.CognitoIdentityCredentials;
-            if (cognitoIdentityCredentials.needsRefresh()) {
+            if (this.iamCredentials.needsRefresh()) {
                 const authenticator = `cognito-idp.${this.region}.amazonaws.com/${this.poolData.UserPoolId}`;
                 const that = this;
                 console.log('Refreshing Cognito credentials');
@@ -95,8 +112,8 @@ export class AuthManager {
                     } else {
                         that.cognitoUserSession = newSession;
                         // tslint:disable-next-line:no-string-literal max-line-length
-                        cognitoIdentityCredentials.params['Logins'][authenticator]  = newSession.getIdToken().getJwtToken();
-                        cognitoIdentityCredentials.refresh((refreshIamErr) => {
+                        this.iamCredentials.params['Logins'][authenticator]  = newSession.getIdToken().getJwtToken();
+                        this.iamCredentials.refresh((refreshIamErr) => {
                             if (refreshIamErr) {
                                 console.log(refreshIamErr);
                                 reject(refreshIamErr);
@@ -112,16 +129,16 @@ export class AuthManager {
         }.bind(this));
     }
 
-    public configureIamCredentials() {
+    public getIamCredentials(): Promise<AWS.CognitoIdentityCredentials> {
         return new Promise(async function (resolve, reject) {
             const authenticator = `cognito-idp.${this.region}.amazonaws.com/${this.poolData.UserPoolId}`;
-            AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+            this.iamCredentials = new AWS.CognitoIdentityCredentials({
                 IdentityPoolId : this.poolData.IdentityPoolId,
                 Logins : {
                     [authenticator] : this.cognitoUserSession.getIdToken().getJwtToken()
                 }
             });
-            resolve(true);
+            resolve(this.iamCredentials);
         }.bind(this));
     }
 }
