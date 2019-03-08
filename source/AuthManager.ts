@@ -42,7 +42,11 @@ export class AuthManager {
         return new Promise(async function (resolve, reject) {
             // get the pool data from the response
             console.log(`Signing into AWS Cognito`);
-            this.poolData = await this.locator.getPoolForUsername(email);
+            try {
+                this.poolData = await this.locator.getPoolForUsername(email);
+            } catch (error) {
+                return reject(error);
+            }
 
             // construct a user pool object
             const userPool = new CognitoUserPool(this.poolData);
@@ -65,13 +69,13 @@ export class AuthManager {
             this.cognitoUser.authenticateUser(authenticationDetails, {
                 onSuccess(result) {
                     that.cognitoUserSession = result;
-                    resolve(result);
+                    return resolve(result);
                 },
                 onFailure(err) {
-                    reject(err);
+                    return reject(err);
                 },
                 mfaRequired(codeDeliveryDetails) { // eslint-disable-line
-                    reject(Error('Multi-factor auth is not currently supported'));
+                    return reject(Error('Multi-factor auth is not currently supported'));
                 },
                 newPasswordRequired(userAttributes, requiredAttributes) { // eslint-disable-line
                     if (newPassword !== undefined && newPassword.length > 0) {
@@ -84,10 +88,10 @@ export class AuthManager {
                         that.cognitoUser.completeNewPasswordChallenge(newPassword, userAttributes, {
                             onSuccess: function (result) {
                                 that.cognitoUserSession = result;
-                                resolve(result);
+                                return resolve(result);
                             },
                             onFailure: function(err) {
-                                reject(err);
+                                return reject(err);
                             }
                         });
                     } else {
