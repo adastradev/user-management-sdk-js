@@ -1,5 +1,5 @@
 import { ICognitoUserPoolLocator } from './ICognitoUserPoolLocator';
-import * as AWS from 'aws-sdk';
+import * as AWS from 'aws-sdk/global';
 import { ICognitoUserPoolApiModel } from './ICognitoUserPoolApiModel';
 import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserSession } from 'amazon-cognito-identity-js';
 import proxy = require('proxy-agent');
