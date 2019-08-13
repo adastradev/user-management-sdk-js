@@ -16,7 +16,11 @@ describe.only('AuthManager', () => {
   before( async () => {
     const region = process.env.AWS_REGION || 'us-east-1';
     const locator = new CognitoUserPoolLocatorUserManagement(region);
-    const discovery = new DiscoverySdk(process.env.DISCOVERY_SERVICE, region, process.env.DEFAULT_STAGE || 'dev');
+    const discovery = new DiscoverySdk(
+      process.env.DISCOVERY_SERVICE || process.env.DISCOVERY_SERVICE_DEV,
+      region,
+      process.env.DEFAULT_STAGE || 'dev'
+    );
     process.env.USER_MANAGEMENT_URI = await discovery.lookupService('user-management');
     auth = new AuthManager(locator, region);
   });
