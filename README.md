@@ -23,7 +23,7 @@ Used to obtain a CognitoUserSession.
 
 `.getIamCredentials()` => Promise -> [CognitoIdentityCredentials](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CognitoIdentityCredentials.html)
 
-Returns a refreshable CognitoIdentityCredentials object. Typically, you will want to set your global AWS-SDK config object's `credentials` key equal to this at the beginning of your session as follows:
+Returns a promise which resolbes a refreshable CognitoIdentityCredentials object **after signing in**. Typically, you will want to set your global AWS-SDK config object's `credentials` key equal to this at the beginning of your session as follows:
 
 ```typescript
 import { config } from 'aws-sdk';
