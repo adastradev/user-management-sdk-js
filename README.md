@@ -1,2 +1,41 @@
 # user-management-sdk-js
-Astra user management SDK for JavaScript in the browser and Node.js
+
+Ad Astra user management SDK for JavaScript in the browser and Node.js
+
+## Tools
+
+### **AuthManager** (Class)
+
+The AuthManager class can be used to:
+
+<details>
+<summary>Sign in a user through AWS's managed Cognito identity provider</summary>
+
+`.signIn( email, password, newPassword = '' )` => Promise<[CognitoUserSession]()>
+
+Used to obtain a CognitoUserSession.
+</details>
+
+<details>
+<summary>Get federated IAM credentials to access AWS resources</summary>
+
+`.getIamCredentials()` => Promise<[CognitoIdentityCredentials]()>
+
+Returns a refreshable CognitoIdentityCredentials object. Typically, you will want to set your global AWS-SDK config object's `credentials` key equal to this at the beginning of your session as follows:
+
+```typescript
+import { config } from 'aws-sdk';
+
+// Instantiate your AuthManager Instance
+
+config.credentials = authManagerInstance.getIamCredentials();
+```
+</details>
+
+<details>
+<summary>Refresh these credentials</summary>
+
+`.refreshCognitoCredentials()` => Promise<`boolean`>
+
+This will check if the credentials need refreshing using the credentials' `.needsRefresh()` method. If it does, it will refresh and resolve `true`. If it does not need refreshed, this will return `false`.
+</details>
