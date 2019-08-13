@@ -12,7 +12,7 @@ The AuthManager class can be used to:
 <summary>Sign in a user through AWS's managed Cognito identity provider</summary>
 <br>
 
-`.signIn( email, password, newPassword = '' )` => Promise<[CognitoUserSession]()>
+`.signIn( email, password, newPassword = '' )` => Promise -> CognitoUserSession
 
 Used to obtain a CognitoUserSession.
 </details>
@@ -21,7 +21,7 @@ Used to obtain a CognitoUserSession.
 <summary>Get federated IAM credentials to access AWS resources</summary>
 <br>
 
-`.getIamCredentials()` => Promise<[CognitoIdentityCredentials]()>
+`.getIamCredentials()` => Promise -> [CognitoIdentityCredentials](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CognitoIdentityCredentials.html)
 
 Returns a refreshable CognitoIdentityCredentials object. Typically, you will want to set your global AWS-SDK config object's `credentials` key equal to this at the beginning of your session as follows:
 
@@ -38,7 +38,7 @@ config.credentials = authManagerInstance.getIamCredentials();
 <summary>Refresh these credentials</summary>
 <br>
 
-`.refreshCognitoCredentials()` => Promise<`boolean`>
+`.refreshCognitoCredentials()` => Promise -> boolean
 
 This will check if the credentials need refreshing using the credentials' `.needsRefresh()` method. If it does, it will refresh and resolve `true`. If it does not need refreshed, this will return `false`.
 </details>
