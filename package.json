@@ -1,11 +1,11 @@
 {
   "name": "@adastradev/user-management-sdk",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Astra user management SDK for JavaScript in the browser and Node.js",
   "main": "dist/index.js",
   "scripts": {
     "build": "./node_modules/.bin/tsc",
-    "test": "mocha -r ts-node/register test/unit/**/*.spec.ts",
+    "test": "mocha -r ts-node/register --timeout 99999 test/{unit,integration}/**/*.spec.ts",
     "system-test": "mocha -r ts-node/register test/system/**/*.spec.ts",
     "lint": "tslint {source,test}/**/*.ts"
   },
@@ -28,11 +28,12 @@
     "aws-api-gateway-client": "git+https://github.com/aregier/aws-api-gateway-client.git#issue/67",
     "aws-sdk": "^2.354.0",
     "axios": "^0.19.0-beta.1",
+    "node-fetch": "^2.6.0",
     "proxy-agent": "^3.0.3"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
-    "@types/mocha": "^5.2.5",
+    "@types/mocha": "^5.2.7",
     "@types/node": "^10.12.6",
     "chai": "^4.2.0",
     "ci-publish": "^1.3.1",
