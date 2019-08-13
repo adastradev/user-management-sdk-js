@@ -128,8 +128,9 @@ export class AuthManager {
                         });
                     }
                 });
+            } else {
+                resolve(false);
             }
-            resolve(true);
         }.bind(this));
     }
 
