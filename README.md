@@ -10,6 +10,7 @@ The AuthManager class can be used to:
 
 <details>
 <summary>Sign in a user through AWS's managed Cognito identity provider</summary>
+<br>
 
 `.signIn( email, password, newPassword = '' )` => Promise<[CognitoUserSession]()>
 
@@ -18,6 +19,7 @@ Used to obtain a CognitoUserSession.
 
 <details>
 <summary>Get federated IAM credentials to access AWS resources</summary>
+<br>
 
 `.getIamCredentials()` => Promise<[CognitoIdentityCredentials]()>
 
@@ -34,6 +36,7 @@ config.credentials = authManagerInstance.getIamCredentials();
 
 <details>
 <summary>Refresh these credentials</summary>
+<br>
 
 `.refreshCognitoCredentials()` => Promise<`boolean`>
 
