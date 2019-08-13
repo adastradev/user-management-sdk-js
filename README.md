@@ -30,7 +30,7 @@ import { config } from 'aws-sdk';
 
 // Instantiate your AuthManager Instance
 
-config.credentials = authManagerInstance.getIamCredentials();
+config.credentials = await authManagerInstance.getIamCredentials();
 ```
 </details>
 
