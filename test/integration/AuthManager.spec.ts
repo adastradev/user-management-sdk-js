@@ -1,9 +1,8 @@
-import { AuthManager } from '../../source/AuthManager';
+import { AuthManager } from '../../source';
 import { CognitoUserPoolLocatorUserManagement } from '../../source/CognitoUserPoolLocatorUserManagement';
 import * as chai from 'chai';
 import { DiscoverySdk } from '@adastradev/serverless-discovery-sdk';
 import fetch from 'node-fetch';
-import sleep from '../util/sleep';
 import { config } from 'aws-sdk';
 // tslint:disable-next-line: no-string-literal
 global['fetch'] = fetch;

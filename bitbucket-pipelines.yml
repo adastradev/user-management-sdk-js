@@ -13,6 +13,7 @@ pipelines:
             - npm install
             - npm run build
             - npm test
+            - npm run test:coveralls
 
             # Publish package
             - npm publish --access=public
@@ -23,4 +24,5 @@ pipelines:
             - npm install
             - npm run build
             - npm test
+            - npm run test:coveralls
 

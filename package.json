@@ -5,9 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "./node_modules/.bin/tsc",
-    "test": "nyc mocha test/{unit,integration}/**/*.spec.ts",
+    "test": "nyc mocha --timeout 99999 test/{unit,integration}/**/*.spec.ts",
     "test:coveralls": "cat coverage/lcov.info | coveralls",
-    "system-test": "mocha test/system/**/*.spec.ts",
+    "system-test": "mocha --timeout 99999 test/system/**/*.spec.ts",
     "lint": "tslint {source,test}/**/*.ts"
   },
   "repository": {
