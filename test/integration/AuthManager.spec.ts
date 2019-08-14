@@ -12,7 +12,7 @@ global['fetch'] = fetch;
 chai.use(chaiAsPromised);
 const expect = chai.expect;
 
-describe.only('AuthManager', () => {
+describe('AuthManager', () => {
   let auth: AuthManager;
   let sandbox: sinon.SinonSandbox;
 
