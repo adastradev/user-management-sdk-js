@@ -9,7 +9,7 @@ import { config } from 'aws-sdk';
 // tslint:disable-next-line: no-string-literal
 global['fetch'] = fetch;
 
-chai.use(chaiAsPromised as any);
+chai.use(chaiAsPromised);
 const expect = chai.expect;
 
 describe.only('AuthManager', () => {
