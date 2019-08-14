@@ -1,9 +1,7 @@
 
 import * as chai from 'chai';
 import sinon = require('sinon');
-import { stubInterface } from 'ts-sinon';
 import { AuthManager } from '../../source/AuthManager';
-import { ICognitoUserPoolLocator } from '../../source/ICognitoUserPoolLocator';
 import {
     AuthenticationDetails,
     CognitoUser,
@@ -17,13 +15,13 @@ describe('AuthManager', () => {
 
     describe('when attempting to sign a cognito user in', () => {
         let sandbox: sinon.SinonSandbox;
-        const locatorStub = stubInterface<ICognitoUserPoolLocator>({
-            getPoolForUsername: Promise.resolve({
+        const locatorStub = {
+            getPoolForUsername: () => Promise.resolve({
                 ClientId: '47ajgnlo93ucpk9r76rtlv66mj',
                 IdentityPoolId: 'us-east-1:5f4ff9f2-75f6-4ad8-84d5-d7955445a5df',
                 UserPoolId: 'us-east-1_aDe89j0zq'
             })
-        });
+        };
 
         beforeEach(() => {
             sandbox = sinon.createSandbox();
