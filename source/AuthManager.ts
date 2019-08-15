@@ -134,10 +134,11 @@ export class AuthManager {
         }.bind(this));
     }
 
-    public getIamCredentials(): Promise<AWS.CognitoIdentityCredentials> {
+    public getIamCredentials(durationSeconds?: number): Promise<AWS.CognitoIdentityCredentials> {
         return new Promise(async function (resolve, reject) {
             const authenticator = `cognito-idp.${this.region}.amazonaws.com/${this.poolData.UserPoolId}`;
             this.iamCredentials = new AWS.CognitoIdentityCredentials({
+                DurationSeconds: durationSeconds || 3600,
                 IdentityPoolId : this.poolData.IdentityPoolId,
                 Logins : {
                     [authenticator] : this.cognitoUserSession.getIdToken().getJwtToken()
