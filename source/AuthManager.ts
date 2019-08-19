@@ -102,36 +102,35 @@ export class AuthManager {
         }.bind(this));
     }
 
-    public refreshCognitoCredentials() {
-        return new Promise(async function (resolve, reject) {
-            if (this.iamCredentials.needsRefresh()) {
-                const authenticator = `cognito-idp.${this.region}.amazonaws.com/${this.poolData.UserPoolId}`;
-                const that = this;
-                console.log('Refreshing Cognito credentials');
-                // tslint:disable-next-line:max-line-length
-                this.cognitoUser.refreshSession(this.cognitoUserSession.getRefreshToken(), (refreshCognitoErr, newSession) => {
-                    if (refreshCognitoErr) {
-                        console.log(refreshCognitoErr);
-                        reject(refreshCognitoErr);
+    public refreshCognitoCredentials = async () => {
+
+        // Check if credentials need refresh
+        if (this.iamCredentials.needsRefresh()) {
+            console.log('Refreshing Cognito credentials');
+            const authenticator = `cognito-idp.${this.region}.amazonaws.com/${this.poolData.UserPoolId}`;
+
+            // If so, refresh Cognito user session
+            this.cognitoUser.refreshSession(
+                this.cognitoUserSession.getRefreshToken(),
+                // User session refresh callback
+                (err, newSession) => {
+                    if (err) {
+                        throw err;
                     } else {
-                        that.cognitoUserSession = newSession;
-                        // tslint:disable-next-line:no-string-literal max-line-length
-                        this.iamCredentials.params['Logins'][authenticator]  = newSession.getIdToken().getJwtToken();
-                        this.iamCredentials.refresh((refreshIamErr) => {
-                            if (refreshIamErr) {
-                                console.log(refreshIamErr);
-                                reject(refreshIamErr);
-                            } else {
-                                console.log('Cognito token successfully updated');
-                                resolve(true);
-                            }
-                        });
+                        this.cognitoUserSession = newSession;
+                        // tslint:disable-next-line: no-string-literal
+                        this.iamCredentials.params['Logins'][authenticator] = newSession.getIdToken().getJwtToken();
                     }
-                });
-            } else {
-                resolve(false);
-            }
-        }.bind(this));
+                }
+            );
+
+            // Refresh identity credentials using new Cognito session and
+            // return true indicating that credentials were refreshed
+            await this.iamCredentials.refreshPromise();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public getIamCredentials = async (durationSeconds: number = 3600): Promise<AWS.CognitoIdentityCredentials> => {
