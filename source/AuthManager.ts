@@ -38,8 +38,8 @@ export class AuthManager {
         AWS.config.region = region;
     }
 
-    public signIn(email: string, password: string, newPassword: string = ''): Promise<CognitoUserSession> {
-        return new Promise(async function (resolve, reject) {
+    public signIn = (email: string, password: string, newPassword: string = ''): Promise<CognitoUserSession> => {
+        return new Promise(async (resolve, reject) => {
             // get the pool data from the response
             console.log(`Signing into AWS Cognito`);
             try {
@@ -86,12 +86,12 @@ export class AuthManager {
                         delete userAttributes.email_verified;
                         delete userAttributes['custom:tenant_id'];
                         that.cognitoUser.completeNewPasswordChallenge(newPassword, userAttributes, {
-                            onSuccess: function (result) {
+                            onFailure: (err) => {
+                                return reject(err);
+                            },
+                            onSuccess: (result) => {
                                 that.cognitoUserSession = result;
                                 return resolve(result);
-                            },
-                            onFailure: function(err) {
-                                return reject(err);
                             }
                         });
                     } else {
@@ -99,7 +99,7 @@ export class AuthManager {
                     }
                 }
             });
-        }.bind(this));
+        });
     }
 
     public refreshCognitoCredentials = async () => {
