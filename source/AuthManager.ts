@@ -134,18 +134,20 @@ export class AuthManager {
         }.bind(this));
     }
 
-    public getIamCredentials(durationSeconds: number = 3600): Promise<AWS.CognitoIdentityCredentials> {
-        return new Promise(async function (resolve, reject) {
-            const authenticator = `cognito-idp.${this.region}.amazonaws.com/${this.poolData.UserPoolId}`;
-            this.iamCredentials = new AWS.CognitoIdentityCredentials({
-                DurationSeconds: durationSeconds,
-                IdentityPoolId : this.poolData.IdentityPoolId,
-                Logins : {
-                    [authenticator] : this.cognitoUserSession.getIdToken().getJwtToken()
-                }
-            });
-            resolve(this.iamCredentials);
-        }.bind(this));
+    public getIamCredentials = async (durationSeconds: number = 3600): Promise<AWS.CognitoIdentityCredentials> => {
+
+        const authenticator = `cognito-idp.${this.region}.amazonaws.com/${this.poolData.UserPoolId}`;
+
+        // Assemble refreshable credentials object
+        this.iamCredentials = new AWS.CognitoIdentityCredentials({
+            DurationSeconds: durationSeconds,
+            IdentityPoolId : this.poolData.IdentityPoolId,
+            Logins : {
+                [authenticator] : this.cognitoUserSession.getIdToken().getJwtToken()
+            }
+        });
+
+        return this.iamCredentials;
     }
 
     public needsRefresh = () => {
