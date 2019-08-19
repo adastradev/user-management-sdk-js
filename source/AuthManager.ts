@@ -147,4 +147,8 @@ export class AuthManager {
             resolve(this.iamCredentials);
         }.bind(this));
     }
+
+    public needsRefresh = () => {
+        return this.iamCredentials.needsRefresh();
+    }
 }
