@@ -1,10 +1,15 @@
 import { ICognitoUserPoolLocator } from './ICognitoUserPoolLocator';
 import * as AWS from 'aws-sdk/global';
 import { ICognitoUserPoolApiModel } from './ICognitoUserPoolApiModel';
-import { AuthenticationDetails, CognitoUser, CognitoUserPool, CognitoUserSession } from 'amazon-cognito-identity-js';
+import {
+    AuthenticationDetails,
+    CognitoUser,
+    CognitoUserPool,
+    CognitoUserSession
+} from 'amazon-cognito-identity-js';
 import proxy = require('proxy-agent');
 import { GlobalConfigInstance } from 'aws-sdk/lib/config';
-
+import { CognitoIdentityCredentials } from 'aws-sdk/global';
 export function configureAwsProxy(awsConfig: GlobalConfigInstance) {
     if (process.env.HTTP_PROXY || process.env.HTTPS_PROXY) {
         // TODO: does AWS support multiple proxy protocols simultaneously (HTTP and HTTPS proxy)
@@ -18,7 +23,6 @@ export function configureAwsProxy(awsConfig: GlobalConfigInstance) {
         });
     }
 }
-
 export class AuthManager {
     private locator: ICognitoUserPoolLocator;
     private poolData: ICognitoUserPoolApiModel;
@@ -26,6 +30,7 @@ export class AuthManager {
     private cognitoUser: CognitoUser;
     private cognitoUserSession: CognitoUserSession;
     private iamCredentials: AWS.CognitoIdentityCredentials;
+    private authenticatorURI: string;
 
     constructor(
         locator: ICognitoUserPoolLocator,
@@ -44,10 +49,10 @@ export class AuthManager {
             console.log(`Signing into AWS Cognito`);
             try {
                 this.poolData = await this.locator.getPoolForUsername(email);
+                this.authenticatorURI = `cognito-idp.${this.region}.amazonaws.com/${this.poolData.UserPoolId}`;
             } catch (error) {
                 return reject(error);
             }
-
             // construct a user pool object
             const userPool = new CognitoUserPool(this.poolData);
             // configure the authentication credentials
@@ -64,7 +69,6 @@ export class AuthManager {
             const authenticationDetails = new AuthenticationDetails(authenticationData);
             // authenticate user to in Cognito user pool
             this.cognitoUser = new CognitoUser(userData);
-
             const that = this;
             this.cognitoUser.authenticateUser(authenticationDetails, {
                 onSuccess(result) {
@@ -81,7 +85,6 @@ export class AuthManager {
                     if (newPassword !== undefined && newPassword.length > 0) {
                         // User was signed up by an admin and must provide new
                         // password and required attributes
-
                         // These attributes are not mutable and should be removed from map.
                         delete userAttributes.email_verified;
                         delete userAttributes['custom:tenant_id'];
@@ -102,54 +105,46 @@ export class AuthManager {
         });
     }
 
-    public refreshCognitoCredentials = async () => {
-
-        // Check if credentials need refresh
-        if (this.iamCredentials.needsRefresh()) {
-            console.log('Refreshing Cognito credentials');
-            const authenticator = `cognito-idp.${this.region}.amazonaws.com/${this.poolData.UserPoolId}`;
-
-            // If so, refresh Cognito user session
-            this.cognitoUser.refreshSession(
-                this.cognitoUserSession.getRefreshToken(),
-                // User session refresh callback
-                (err, newSession) => {
-                    if (err) {
-                        throw err;
-                    } else {
-                        this.cognitoUserSession = newSession;
-                        // tslint:disable-next-line: no-string-literal
-                        this.iamCredentials.params['Logins'][authenticator] = newSession.getIdToken().getJwtToken();
-                    }
-                }
-            );
-
-            // Refresh identity credentials using new Cognito session and
-            // return true indicating that credentials were refreshed
-            await this.iamCredentials.refreshPromise();
-            return true;
-        } else {
-            return false;
-        }
+    public refresh = async () => {
+        await this.refreshCognitoCredentials();
+        return this.getIamCredentials();
     }
 
-    public getIamCredentials = async (durationSeconds: number = 3600): Promise<AWS.CognitoIdentityCredentials> => {
+    public refreshCognitoCredentials = async (): Promise<boolean> => {
+        const { refreshToken } = this.getTokens(this.cognitoUserSession);
 
-        const authenticator = `cognito-idp.${this.region}.amazonaws.com/${this.poolData.UserPoolId}`;
-
-        // Assemble refreshable credentials object
-        this.iamCredentials = new AWS.CognitoIdentityCredentials({
-            DurationSeconds: durationSeconds,
-            IdentityPoolId : this.poolData.IdentityPoolId,
-            Logins : {
-                [authenticator] : this.cognitoUserSession.getIdToken().getJwtToken()
+        this.cognitoUser.refreshSession(refreshToken, async (err, session) => {
+            if (err) {
+                throw err;
+            } else {
+                const tokens = this.getTokens(session);
+                this.iamCredentials = this.buildCognitoIdentityCredentials(tokens);
+                await this.iamCredentials.getPromise();
+                console.log(`Credentials refreshed - expire time: ${this.iamCredentials.expireTime}`);
             }
         });
 
+        return true;
+    }
+
+    public buildCognitoIdentityCredentials = (tokens) => {
+        return new CognitoIdentityCredentials({
+            IdentityPoolId: this.poolData.IdentityPoolId,
+            Logins: {
+                [this.authenticatorURI]: tokens.idToken.getJwtToken()
+            }
+        });
+    }
+
+    public getIamCredentials = () => {
         return this.iamCredentials;
     }
 
-    public needsRefresh = () => {
-        return this.iamCredentials.needsRefresh();
+    private getTokens = (session) => {
+        return {
+          accessToken: session.getAccessToken(),
+          idToken: session.getIdToken(),
+          refreshToken: session.getRefreshToken()
+        };
     }
 }
