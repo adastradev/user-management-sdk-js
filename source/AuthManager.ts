@@ -120,7 +120,7 @@ export class AuthManager {
                 const tokens = this.getTokens(session);
                 this.iamCredentials = this.buildCognitoIdentityCredentials(tokens);
                 await this.iamCredentials.getPromise();
-                console.log(`Credentials refreshed - expire time: ${this.iamCredentials.expireTime}`);
+                console.log(`Credentials.getPromise() called - credential expiry: ${this.iamCredentials.expireTime}`);
             }
         });
 
