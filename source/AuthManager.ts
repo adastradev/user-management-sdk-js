@@ -98,7 +98,7 @@ export class AuthManager {
                             }
                         });
                     } else {
-                        reject(Error('New password is required for the user'));
+                        return reject(Error('New password is required for the user'));
                     }
                 }
             });
@@ -110,21 +110,29 @@ export class AuthManager {
         return this.getIamCredentials();
     }
 
-    public refreshCognitoCredentials = async (): Promise<boolean> => {
-        const { refreshToken } = this.getTokens(this.cognitoUserSession);
-
-        this.cognitoUser.refreshSession(refreshToken, async (err, session) => {
-            if (err) {
-                throw err;
-            } else {
-                const tokens = this.getTokens(session);
-                this.iamCredentials = this.buildCognitoIdentityCredentials(tokens);
-                await this.iamCredentials.getPromise();
-                console.log(`Credentials.getPromise() called - credential expiry: ${this.iamCredentials.expireTime}`);
-            }
+    public refreshCognitoCredentials = (): Promise<any> => {
+        return new Promise((res, rej) => {
+            const { refreshToken } = this.getTokens(this.cognitoUserSession);
+            const that = this;
+            this.cognitoUser.refreshSession(refreshToken, (err, session) => {
+                if (err) {
+                    rej(err);
+                } else {
+                    const tokens = this.getTokens(session);
+                    this.iamCredentials = this.buildCognitoIdentityCredentials(tokens);
+                    this.iamCredentials.get((error) => {
+                        if (error) {
+                            rej(error);
+                        } else {
+                            console.log(`Credentials.get() called - credential expiry: ${
+                                that.iamCredentials.expireTime
+                            }`);
+                        }
+                        res();
+                    });
+                }
+            });
         });
-
-        return true;
     }
 
     public buildCognitoIdentityCredentials = (tokens) => {

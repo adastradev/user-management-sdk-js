@@ -1,6 +1,6 @@
 {
   "name": "@adastradev/user-management-sdk",
-  "version": "2.0.0",
+  "version": "2.0.0-beta.3",
   "description": "Astra user management SDK for JavaScript in the browser and Node.js",
   "main": "dist/index.js",
   "scripts": {
@@ -11,6 +11,10 @@
     "system-test": "mocha --timeout 99999 test/system/**/*.spec.ts",
     "lint": "tslint {source,test}/**/*.ts"
   },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/adastradev/user-management-sdk-js.git"
