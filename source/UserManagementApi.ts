@@ -2,7 +2,7 @@ import { ApiCredentials, BearerTokenCredentials, IAMCredentials } from '@adastra
 
 // ignore type checking for private member aws-api-gateway-client for now
 // declare function require(name:string): any; // tslint:disable-line
-const apigClientFactory: any = require('aws-api-gateway-client').default; // tslint:disable-line
+const apigClientFactory: any = require('@adastradev/aws-api-gateway-client').default; // tslint:disable-line
 
 // interceptor logging for Authorization headers
 // axios.interceptors.request.use(function(config) {
