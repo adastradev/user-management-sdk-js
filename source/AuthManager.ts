@@ -110,8 +110,9 @@ export class AuthManager {
     }
 
     public async getAndSetEnvironmentCredentials() {
-        await this.getCognitoCredentials();
+        const creds = await this.getCognitoCredentials();
         this.setEnvironmentIAMCreds(this.iamCredentials);
+        return creds;
     }
 
     public getCognitoCredentials(): Promise<any> {

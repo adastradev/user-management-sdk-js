@@ -47,9 +47,13 @@ describe.only('AuthManager', () => {
     it('Should have ability to login and refresh multiple times successfully', async () => {
         const auth = new AuthManager(locator, region);
         await auth.signIn(process.env.ASTRA_CLOUD_USERNAME, process.env.ASTRA_CLOUD_PASSWORD);
-        await auth.getAndSetEnvironmentCredentials();
+        const creds = await auth.getAndSetEnvironmentCredentials();
         expect(process.env.AWS_ACCESS_KEY_ID).to.not.be.null;
+        expect(process.env.AWS_ACCESS_KEY_ID).to.equal(creds.accessKeyId);
         expect(process.env.AWS_SECRET_ACCESS_KEY).to.not.be.null;
+        expect(process.env.AWS_SECRET_ACCESS_KEY).to.equal(creds.secretAccessKey);
+        expect(process.env.AWS_SESSION_TOKEN).to.not.be.null;
+        expect(process.env.AWS_SESSION_TOKEN).to.equal(creds.sessionToken);
     });
 
     it('Should reject if there is a cognitoUser refreshSession error', async () => {
