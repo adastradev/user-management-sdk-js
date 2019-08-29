@@ -1,6 +1,6 @@
 {
   "name": "@adastradev/user-management-sdk",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Astra user management SDK for JavaScript in the browser and Node.js",
   "main": "dist/index.js",
   "scripts": {
@@ -29,7 +29,7 @@
     "@adastradev/serverless-discovery-sdk": "0.0.7",
     "amazon-cognito-identity-js": "^3.0.3",
     "aws-sdk": "^2.354.0",
-    "axios": "^0.19.0-beta.1",
+    "axios": "^0.19.0",
     "node-fetch": "^2.6.0",
     "proxy-agent": "^3.0.3"
   },
