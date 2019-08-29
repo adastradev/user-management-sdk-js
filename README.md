@@ -12,33 +12,55 @@ The AuthManager class can be used to:
 <summary>Sign in a user through AWS's managed Cognito identity provider</summary>
 <br>
 
-`.signIn( email, password, newPassword = '' )` => Promise -> CognitoUserSession
+`.signIn( email, password, newPassword = '' )` => Promise -> [CognitoUserSession](https://github.com/aws-amplify/amplify-js/blob/master/packages/amazon-cognito-identity-js/src/CognitoUserSession.js)
 
 Used to obtain a CognitoUserSession.
 </details>
 
 <details>
-<summary>Get federated IAM credentials to access AWS resources</summary>
+<summary>Get/refresh credentials, and set environment credentials with one function</summary>
 <br>
 
-`.getIamCredentials()` => Promise -> [CognitoIdentityCredentials](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CognitoIdentityCredentials.html)
+`.getAndSetEnvironmentCredentials()` => Promise -> [CognitoIdentityCredentials](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CognitoIdentityCredentials.html)
 
-Returns a promise which resolbes a refreshable CognitoIdentityCredentials object **after signing in**. Typically, you will want to set your global AWS-SDK config object's `credentials` key equal to this at the beginning of your session as follows:
+This will set the following environment variables from the CognitoIdentityCredentials object:
 
 ```typescript
-import { config } from 'aws-sdk';
-
-// Instantiate your AuthManager Instance
-
-config.credentials = await authManagerInstance.getIamCredentials();
+process.env.AWS_ACCESS_KEY_ID
+process.env.AWS_SECRET_ACCESS_KEY
+process.env.AWS_SESSION_TOKEN
 ```
+
+This function is equivalent to:
+
+```typescript
+const creds = await authManagerInstance.refreshCognitoCredentials();
+authManagerInstance.setEnvironmentIAMCreds(creds);
+```
+
 </details>
 
 <details>
-<summary>Refresh these credentials</summary>
+<summary>Get/refresh cognito credentials, and federated identity credentials</summary>
 <br>
 
-`.refreshCognitoCredentials()` => Promise -> boolean
+`.refreshCognitoCredentials()` => Promise -> [CognitoIdentityCredentials](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CognitoIdentityCredentials.html)
 
-This will check if the credentials need refreshing using the credentials' `.needsRefresh()` method. If it does, it will refresh and resolve `true`. If it does not need refreshed, this will return `false`.
+Returns a promise which resolves a fresh CognitoIdentityCredentials object **after signing in**. 
+
+</details>
+
+<details>
+<summary>Set credentials in the environment</summary>
+<br>
+
+`.setEnvironmentIAMCreds(creds: CognitoIdentityCredentials)` => void
+
+This will set the following environment variables from the CognitoIdentityCredentials object:
+
+```typescript
+process.env.AWS_ACCESS_KEY_ID
+process.env.AWS_SECRET_ACCESS_KEY
+process.env.AWS_SESSION_TOKEN
+```
 </details>
