@@ -30,6 +30,14 @@ process.env.AWS_ACCESS_KEY_ID
 process.env.AWS_SECRET_ACCESS_KEY
 process.env.AWS_SESSION_TOKEN
 ```
+
+This function is equivalent to:
+
+```typescript
+const creds = await authManagerInstance.refreshCognitoCredentials();
+authManagerInstance.setEnvironmentIAMCreds(creds);
+```
+
 </details>
 
 <details>
