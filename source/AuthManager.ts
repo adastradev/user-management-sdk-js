@@ -10,6 +10,7 @@ import {
 import proxy = require('proxy-agent');
 import { GlobalConfigInstance } from 'aws-sdk/lib/config';
 import { CognitoIdentityCredentials } from 'aws-sdk/global';
+
 export function configureAwsProxy(awsConfig: GlobalConfigInstance) {
     if (process.env.HTTP_PROXY || process.env.HTTPS_PROXY) {
         // TODO: does AWS support multiple proxy protocols simultaneously (HTTP and HTTPS proxy)
