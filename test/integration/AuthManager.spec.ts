@@ -14,7 +14,7 @@ chai.should();
 chai.use(chaiAsPromised);
 const expect = chai.expect;
 
-describe.only('AuthManager', () => {
+describe('AuthManager', () => {
     let sandbox: sinon.SinonSandbox;
     let locator: CognitoUserPoolLocatorUserManagement;
     let region: string;
