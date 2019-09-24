@@ -105,11 +105,13 @@ describe('UserManagementApi', () => {
         it('Should invoke api with correct args', async () => {
             await api.getUserPools();
             expect(client.invokeApi.calledOnce).to.be.true;
-            expect(client.invokeApi.args[0][0]).to.deep.equal({});
-            expect(client.invokeApi.args[0][1]).to.deep.equal('/userpools');
-            expect(client.invokeApi.args[0][2]).to.deep.equal('GET');
-            // Need to check that it has bearer token too
-            expect(client.invokeApi.args[0][4]).to.deep.equal({});
+            expect(client.invokeApi.args[0]).to.deep.equal([
+                {},
+                '/userpools',
+                'GET',
+                (api as any).additionalParams,
+                {}
+            ]);
         });
     });
 
