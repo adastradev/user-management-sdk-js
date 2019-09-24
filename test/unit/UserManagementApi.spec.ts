@@ -173,11 +173,13 @@ describe('UserManagementApi', () => {
         it('Should invoke api with correct args', async () => {
             await api.getUserInfo(userName);
             expect(client.invokeApi.calledOnce).to.be.true;
-            expect(client.invokeApi.args[0][0]).to.deep.equal({});
-            expect(client.invokeApi.args[0][1]).to.deep.equal('/users/' + encodeURIComponent(userName) + '/info');
-            expect(client.invokeApi.args[0][2]).to.deep.equal('GET');
-            // Need to check that it has bearer token too
-            expect(client.invokeApi.args[0][4]).to.deep.equal({});
+            expect(client.invokeApi.args[0]).to.deep.equal([
+                {},
+                '/users/' + encodeURIComponent(userName) + '/info',
+                'GET',
+                (api as any).additionalParams,
+                {}
+            ]);
         });
     });
 
@@ -185,11 +187,13 @@ describe('UserManagementApi', () => {
         it('Should invoke api with correct args', async () => {
             await api.getUsers(firstName);
             expect(client.invokeApi.calledOnce).to.be.true;
-            expect(client.invokeApi.args[0][0]).to.deep.equal({});
-            expect(client.invokeApi.args[0][1]).to.deep.equal('/users');
-            expect(client.invokeApi.args[0][2]).to.deep.equal('GET');
-            // Need to check that it has bearer token too
-            expect(client.invokeApi.args[0][4]).to.deep.equal({});
+            expect(client.invokeApi.args[0]).to.deep.equal([
+                {},
+                '/users',
+                'GET',
+                (api as any).additionalParams,
+                {}
+            ]);
         });
     });
 });
