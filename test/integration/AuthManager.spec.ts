@@ -6,12 +6,12 @@ import * as sinon from 'sinon';
 import { DiscoverySdk } from '@adastradev/serverless-discovery-sdk';
 import fetch from 'node-fetch';
 import { CognitoIdentityCredentials, config } from 'aws-sdk';
-import { CognitoUser } from 'amazon-cognito-identity-js';
+import sleep from '../util/sleep';
 // tslint:disable-next-line: no-string-literal
 global['fetch'] = fetch;
 
-chai.should();
 chai.use(chaiAsPromised);
+chai.should();
 const expect = chai.expect;
 
 describe('AuthManager', () => {
@@ -35,40 +35,46 @@ describe('AuthManager', () => {
         process.env.USER_MANAGEMENT_URI = await discovery.lookupService('user-management');
     });
 
-    beforeEach(() => {
-        process.env.AWS_ACCESS_KEY_ID = null;
-        process.env.AWS_SECRET_ACCESS_KEY = null;
-    });
-
     afterEach(() => {
         sandbox.restore();
     });
 
     it('Should have ability to login and refresh multiple times successfully', async () => {
         const auth = new AuthManager(locator, region);
+        (auth as any).minutesBeforeAllowRefresh = 0;
         await auth.signIn(process.env.ASTRA_CLOUD_USERNAME, process.env.ASTRA_CLOUD_PASSWORD);
-        const creds = await auth.getAndSetEnvironmentCredentials();
-        expect(process.env.AWS_ACCESS_KEY_ID).to.not.be.null;
-        expect(process.env.AWS_ACCESS_KEY_ID).to.equal(creds.accessKeyId);
-        expect(process.env.AWS_SECRET_ACCESS_KEY).to.not.be.null;
-        expect(process.env.AWS_SECRET_ACCESS_KEY).to.equal(creds.secretAccessKey);
-        expect(process.env.AWS_SESSION_TOKEN).to.not.be.null;
-        expect(process.env.AWS_SESSION_TOKEN).to.equal(creds.sessionToken);
+        await auth.getAndSetEnvironmentCredentials();
+        const envCredsOne = {
+            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+        };
+
+        await sleep(1000);
+
+        await auth.getCognitoCredentials();
+        await auth.getAndSetEnvironmentCredentials();
+        const envCredsTwo = {
+            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+        };
+        expect(envCredsOne).not.deep.equal(envCredsTwo);
     });
 
     it('Should reject if there is a cognitoUser refreshSession error', async () => {
         const auth = new AuthManager(locator, region);
         await auth.signIn(process.env.ASTRA_CLOUD_USERNAME, process.env.ASTRA_CLOUD_PASSWORD);
+        (auth as any).minutesBeforeAllowRefresh = 0;
         const error = Error('Blah');
-        sandbox.stub(CognitoUser.prototype, 'refreshSession').callsArgWith(1, error, null);
-        return auth.getCognitoCredentials().should.eventually.be.rejectedWith(error);
+        sandbox.stub((auth as any).cognitoUser, 'refreshSession').callsArgWith(1, error);
+        return auth.getAndSetEnvironmentCredentials().should.eventually.be.rejectedWith(error);
     });
 
     it('Should reject if there is an iamCredentials refresh error', async () => {
         const auth = new AuthManager(locator, region);
         await auth.signIn(process.env.ASTRA_CLOUD_USERNAME, process.env.ASTRA_CLOUD_PASSWORD);
+        (auth as any).minutesBeforeAllowRefresh = 0;
         const error = Error('Blah');
         sandbox.stub(CognitoIdentityCredentials.prototype, 'get').callsArgWith(0, error);
-        return auth.getCognitoCredentials().should.eventually.be.rejectedWith(error);
+        return auth.getAndSetEnvironmentCredentials().should.eventually.be.rejectedWith(error);
     });
 });

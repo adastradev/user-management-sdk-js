@@ -1,7 +1,7 @@
 
 import * as chai from 'chai';
 import sinon = require('sinon');
-import { AuthManager } from '../../source/AuthManager';
+import { AuthManager } from '../../source';
 import {
     AuthenticationDetails,
     CognitoUser,
