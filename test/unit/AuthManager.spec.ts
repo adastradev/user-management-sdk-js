@@ -1,7 +1,7 @@
 
 import * as chai from 'chai';
 import sinon = require('sinon');
-import { AuthManager } from '../../source/AuthManager';
+import { AuthManager } from '../../source';
 import {
     AuthenticationDetails,
     CognitoUser,
@@ -13,15 +13,16 @@ const expect = chai.expect;
 
 describe('AuthManager', () => {
 
+    const locatorStub = {
+        getPoolForUsername: () => Promise.resolve({
+            ClientId: '47ajgnlo93ucpk9r76rtlv66mj',
+            IdentityPoolId: 'us-east-1:5f4ff9f2-75f6-4ad8-84d5-d7955445a5df',
+            UserPoolId: 'us-east-1_aDe89j0zq'
+        })
+    };
+
     describe('when attempting to sign a cognito user in', () => {
         let sandbox: sinon.SinonSandbox;
-        const locatorStub = {
-            getPoolForUsername: () => Promise.resolve({
-                ClientId: '47ajgnlo93ucpk9r76rtlv66mj',
-                IdentityPoolId: 'us-east-1:5f4ff9f2-75f6-4ad8-84d5-d7955445a5df',
-                UserPoolId: 'us-east-1_aDe89j0zq'
-            })
-        };
 
         beforeEach(() => {
             sandbox = sinon.createSandbox();

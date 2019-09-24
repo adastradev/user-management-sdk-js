@@ -15,37 +15,49 @@ export class UserManagementApi {
     private apigClient: any;
     private additionalParams: any;
 
-    constructor(serviceEndpointUri: string, region: string, credentials: ApiCredentials) {
-        if (credentials.type === 'None') {
-            this.apigClient = apigClientFactory.newClient({
-                accessKey: '',
-                invokeUrl: serviceEndpointUri,
-                region,
-                secretKey: ''
-            });
-        } else if (credentials.type === 'IAM') {
-            const iamCreds = credentials as IAMCredentials;
-            this.apigClient = apigClientFactory.newClient({
-                accessKey: iamCreds.accessKeyId,
-                invokeUrl: serviceEndpointUri,
-                region,
-                secretKey: iamCreds.secretAccessKey
-            });
-        } else if (credentials.type === 'BearerToken') {
-            const tokenCreds = credentials as BearerTokenCredentials;
-            this.additionalParams = {
-                headers: {
-                    Authorization: 'Bearer ' + tokenCreds.idToken
-                }
-            };
-            this.apigClient = apigClientFactory.newClient({
-                accessKey: '',
-                invokeUrl: serviceEndpointUri,
-                region,
-                secretKey: ''
-            });
+    constructor(serviceEndpointUri: string, region: string, credentials: ApiCredentials, apigClient?: any) {
+        if (apigClient) {
+            if (credentials.type === 'BearerToken') {
+                const tokenCreds = credentials as BearerTokenCredentials;
+                this.additionalParams = {
+                    headers: {
+                        Authorization: 'Bearer ' + tokenCreds.idToken
+                    }
+                };
+            }
+            this.apigClient = apigClient;
         } else {
-            throw(Error('Unsupported credential type in UserManagementApi'));
+            if (credentials.type === 'None') {
+                this.apigClient = apigClientFactory.newClient({
+                    accessKey: '',
+                    invokeUrl: serviceEndpointUri,
+                    region,
+                    secretKey: ''
+                });
+            } else if (credentials.type === 'IAM') {
+                const iamCreds = credentials as IAMCredentials;
+                this.apigClient = apigClientFactory.newClient({
+                    accessKey: iamCreds.accessKeyId,
+                    invokeUrl: serviceEndpointUri,
+                    region,
+                    secretKey: iamCreds.secretAccessKey
+                });
+            } else if (credentials.type === 'BearerToken') {
+                const tokenCreds = credentials as BearerTokenCredentials;
+                this.additionalParams = {
+                    headers: {
+                        Authorization: 'Bearer ' + tokenCreds.idToken
+                    }
+                };
+                this.apigClient = apigClientFactory.newClient({
+                    accessKey: '',
+                    invokeUrl: serviceEndpointUri,
+                    region,
+                    secretKey: ''
+                });
+            } else {
+                throw(Error('Unsupported credential type in UserManagementApi'));
+            }
         }
     }
 
