@@ -77,11 +77,13 @@ describe('UserManagementApi', () => {
         it('Should invoke api with correct args', async () => {
             await api.createUserPool(tenant_id);
             expect(client.invokeApi.calledOnce).to.be.true;
-            expect(client.invokeApi.args[0][0]).to.deep.equal({});
-            expect(client.invokeApi.args[0][1]).to.deep.equal('/admin/userpools');
-            expect(client.invokeApi.args[0][2]).to.deep.equal('POST');
-            expect(client.invokeApi.args[0][3]).to.deep.equal({});
-            expect(client.invokeApi.args[0][4]).to.deep.equal({ tenant_id });
+            expect(client.invokeApi.args[0]).to.deep.equal([
+                {},
+                '/admin/userpools',
+                'POST',
+                {},
+                { tenant_id }
+            ]);
         });
     });
 
@@ -89,11 +91,13 @@ describe('UserManagementApi', () => {
         it('Should invoke api with correct args', async () => {
             await api.deleteUserPool(id);
             expect(client.invokeApi.calledOnce).to.be.true;
-            expect(client.invokeApi.args[0][0]).to.deep.equal({});
-            expect(client.invokeApi.args[0][1]).to.deep.equal('/admin/userpools/' + id);
-            expect(client.invokeApi.args[0][2]).to.deep.equal('DELETE');
-            expect(client.invokeApi.args[0][3]).to.deep.equal({});
-            expect(client.invokeApi.args[0][4]).to.deep.equal({});
+            expect(client.invokeApi.args[0]).to.deep.equal([
+                {},
+                '/admin/userpools/' + id,
+                'DELETE',
+                {},
+                {}
+            ]);
         });
     });
 
@@ -113,11 +117,13 @@ describe('UserManagementApi', () => {
         it('Should invoke api with correct args', async () => {
             await api.createUser(tenant_id, userName, password, firstName, lastName);
             expect(client.invokeApi.calledOnce).to.be.true;
-            expect(client.invokeApi.args[0][0]).to.deep.equal({});
-            expect(client.invokeApi.args[0][1]).to.deep.equal('/admin/users');
-            expect(client.invokeApi.args[0][2]).to.deep.equal('POST');
-            expect(client.invokeApi.args[0][3]).to.deep.equal({});
-            expect(client.invokeApi.args[0][4]).to.deep.equal({ tenant_id, userName, password, firstName, lastName });
+            expect(client.invokeApi.args[0]).to.deep.equal([
+                {},
+                '/admin/users',
+                'POST',
+                {},
+                { tenant_id, userName, password, firstName, lastName }
+            ]);
         });
     });
     
@@ -125,11 +131,13 @@ describe('UserManagementApi', () => {
         it('Should invoke api with correct args', async () => {
             await api.registerTenant(tenantName, userName, firstName, lastName);
             expect(client.invokeApi.calledOnce).to.be.true;
-            expect(client.invokeApi.args[0][0]).to.deep.equal({});
-            expect(client.invokeApi.args[0][1]).to.deep.equal('/tenant/register');
-            expect(client.invokeApi.args[0][2]).to.deep.equal('POST');
-            expect(client.invokeApi.args[0][3]).to.deep.equal({});
-            expect(client.invokeApi.args[0][4]).to.deep.equal({ tenantName, userName, firstName, lastName });
+            expect(client.invokeApi.args[0]).to.deep.equal([
+                {},
+                '/tenant/register',
+                'POST',
+                {},
+                { tenantName, userName, firstName, lastName }
+            ]);
         });
     });
 
@@ -137,11 +145,13 @@ describe('UserManagementApi', () => {
         it('Should invoke api with correct args', async () => {
             await api.deleteUser(userName);
             expect(client.invokeApi.calledOnce).to.be.true;
-            expect(client.invokeApi.args[0][0]).to.deep.equal({});
-            expect(client.invokeApi.args[0][1]).to.deep.equal('/admin/users/' + encodeURIComponent(userName));
-            expect(client.invokeApi.args[0][2]).to.deep.equal('DELETE');
-            expect(client.invokeApi.args[0][3]).to.deep.equal({});
-            expect(client.invokeApi.args[0][4]).to.deep.equal({});
+            expect(client.invokeApi.args[0]).to.deep.equal([
+                {},
+                '/admin/users/' + encodeURIComponent(userName),
+                'DELETE',
+                {},
+                {}
+            ]);
         });
     });
 
@@ -149,11 +159,13 @@ describe('UserManagementApi', () => {
         it('Should invoke api with correct args', async () => {
             await api.getUserPoolByUserName(userName);
             expect(client.invokeApi.calledOnce).to.be.true;
-            expect(client.invokeApi.args[0][0]).to.deep.equal({});
-            expect(client.invokeApi.args[0][1]).to.deep.equal('/users/' + encodeURIComponent(userName) + '/pool');
-            expect(client.invokeApi.args[0][2]).to.deep.equal('GET');
-            expect(client.invokeApi.args[0][3]).to.deep.equal({});
-            expect(client.invokeApi.args[0][4]).to.deep.equal({});
+            expect(client.invokeApi.args[0]).to.deep.equal([
+                {},
+                '/users/' + encodeURIComponent(userName) + '/pool',
+                'GET',
+                {},
+                {}
+            ]);
         });
     });
 
