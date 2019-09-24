@@ -31,6 +31,48 @@ describe('UserManagementApi', () => {
         sandbox.restore();
     });
 
+    describe('bearer credentials', () => {
+        it('Should have additionalParams', async () => {
+            const testAPI = new UserManagementApi('https://www.aais.com/', 'blah', {
+                type: 'BearerToken',
+                idToken: 'blah'
+            } as ApiCredentials)
+            expect((testAPI as any).additionalParams).to.deep.equal({
+                headers: { Authorization: 'Bearer blah' }
+            });
+        });
+    });
+
+    describe('No credentials', () => {
+        it('Should not have additional params', async () => {
+            const testAPI = new UserManagementApi('https://www.aais.com/', 'blah', {
+                type: 'None'
+            } as ApiCredentials)
+            expect((testAPI as any).additionalParams).to.be.undefined;
+        });
+    });
+
+    describe('IAM credentials', () => {
+        it('Should not have additional params', async () => {
+            const testAPI = new UserManagementApi('https://www.aais.com/', 'blah', {
+                type: 'IAM',
+                accessKeyId: 'blah',
+                secretAccessKey: 'blah'
+            } as ApiCredentials)
+            expect((testAPI as any).additionalParams).to.be.undefined;
+        });
+    });
+
+    describe('Other credentials', () => {
+        it('Should throw', async () => {
+            expect(() => {
+                new UserManagementApi('https://www.aais.com/', 'blah', {
+                    type: 'asdf'
+                } as any)
+            }).to.throw;
+        });
+    });
+
     describe('createUserPool', () => {
         it('Should invoke api with correct args', async () => {
             await api.createUserPool(tenant_id);
