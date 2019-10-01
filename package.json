@@ -27,7 +27,7 @@
   "dependencies": {
     "@adastradev/aws-api-gateway-client": "^0.2.18-beta.1",
     "@adastradev/serverless-discovery-sdk": "0.0.7",
-    "amazon-cognito-identity-js": "^3.0.3",
+    "amazon-cognito-identity-js": "^3.0.16",
     "aws-sdk": "^2.354.0",
     "axios": "^0.19.0",
     "node-fetch": "^2.6.0",
