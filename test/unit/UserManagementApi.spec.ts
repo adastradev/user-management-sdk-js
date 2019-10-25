@@ -26,7 +26,7 @@ describe('UserManagementApi', () => {
       'blah',
       'blah',
       { type: 'None' } as ApiCredentials,
-      client,
+      client
     );
   });
 
@@ -38,10 +38,10 @@ describe('UserManagementApi', () => {
     it('Should have additionalParams', async () => {
       const testAPI = new UserManagementApi('https://www.aais.com/', 'blah', {
         type: 'BearerToken',
-        idToken: 'blah',
+        idToken: 'blah'
       } as ApiCredentials);
       expect((testAPI as any).additionalParams).to.deep.equal({
-        headers: { Authorization: 'Bearer blah' },
+        headers: { Authorization: 'Bearer blah' }
       });
     });
   });
@@ -49,7 +49,7 @@ describe('UserManagementApi', () => {
   describe('No credentials', () => {
     it('Should not have additional params', async () => {
       const testAPI = new UserManagementApi('https://www.aais.com/', 'blah', {
-        type: 'None',
+        type: 'None'
       } as ApiCredentials);
       expect((testAPI as any).additionalParams).to.be.undefined;
     });
@@ -60,7 +60,7 @@ describe('UserManagementApi', () => {
       const testAPI = new UserManagementApi('https://www.aais.com/', 'blah', {
         type: 'IAM',
         accessKeyId: 'blah',
-        secretAccessKey: 'blah',
+        secretAccessKey: 'blah'
       } as ApiCredentials);
       expect((testAPI as any).additionalParams).to.be.undefined;
     });
@@ -70,7 +70,7 @@ describe('UserManagementApi', () => {
     it('Should throw', async () => {
       expect(() => {
         new UserManagementApi('https://www.aais.com/', 'blah', {
-          type: 'asdf',
+          type: 'asdf'
         } as any);
       }).to.throw;
     });
@@ -85,7 +85,7 @@ describe('UserManagementApi', () => {
         '/admin/userpools',
         'POST',
         {},
-        { tenant_id },
+        { tenant_id }
       ]);
     });
   });
@@ -99,7 +99,7 @@ describe('UserManagementApi', () => {
         '/admin/userpools/' + id,
         'DELETE',
         {},
-        {},
+        {}
       ]);
     });
   });
@@ -113,7 +113,7 @@ describe('UserManagementApi', () => {
         '/userpools',
         'GET',
         (api as any).additionalParams,
-        {},
+        {}
       ]);
     });
   });
@@ -127,7 +127,7 @@ describe('UserManagementApi', () => {
         '/admin/users',
         'POST',
         {},
-        { tenant_id, userName, password, firstName, lastName },
+        { tenant_id, userName, password, firstName, lastName }
       ]);
     });
   });
@@ -141,7 +141,7 @@ describe('UserManagementApi', () => {
         '/tenant/register',
         'POST',
         {},
-        { tenantName, userName, firstName, lastName },
+        { tenantName, userName, firstName, lastName }
       ]);
     });
   });
@@ -155,7 +155,7 @@ describe('UserManagementApi', () => {
         '/admin/users/' + encodeURIComponent(userName),
         'DELETE',
         {},
-        {},
+        {}
       ]);
     });
   });
@@ -169,7 +169,7 @@ describe('UserManagementApi', () => {
         '/users/' + encodeURIComponent(userName) + '/pool',
         'GET',
         {},
-        {},
+        {}
       ]);
     });
   });
@@ -183,7 +183,7 @@ describe('UserManagementApi', () => {
         '/users/' + encodeURIComponent(userName) + '/info',
         'GET',
         (api as any).additionalParams,
-        {},
+        {}
       ]);
     });
   });
@@ -197,7 +197,7 @@ describe('UserManagementApi', () => {
         '/users',
         'GET',
         (api as any).additionalParams,
-        {},
+        {}
       ]);
     });
   });

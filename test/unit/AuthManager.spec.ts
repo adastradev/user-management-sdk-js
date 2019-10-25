@@ -5,7 +5,7 @@ import {
   AuthenticationDetails,
   CognitoUser,
   CognitoUserSession,
-  IAuthenticationCallback,
+  IAuthenticationCallback
 } from 'amazon-cognito-identity-js';
 
 const expect = chai.expect;
@@ -16,8 +16,8 @@ describe('AuthManager', () => {
       Promise.resolve({
         ClientId: '47ajgnlo93ucpk9r76rtlv66mj',
         IdentityPoolId: 'us-east-1:5f4ff9f2-75f6-4ad8-84d5-d7955445a5df',
-        UserPoolId: 'us-east-1_aDe89j0zq',
-      }),
+        UserPoolId: 'us-east-1_aDe89j0zq'
+      })
   };
 
   describe('when attempting to sign a cognito user in', () => {
@@ -34,7 +34,7 @@ describe('AuthManager', () => {
     it('should acquire a valid Cognito session (JWT)', async () => {
       const authenticateUserFunc = async (
         authenticationDetails: AuthenticationDetails,
-        callbacks: IAuthenticationCallback,
+        callbacks: IAuthenticationCallback
       ) => {
         const stubSession = sinon.createStubInstance(CognitoUserSession);
         stubSession.isValid.returns(true);

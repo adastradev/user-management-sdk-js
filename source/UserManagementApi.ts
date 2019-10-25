@@ -1,7 +1,7 @@
 import {
   ApiCredentials,
   BearerTokenCredentials,
-  IAMCredentials,
+  IAMCredentials
 } from '@adastradev/serverless-discovery-sdk';
 
 // ignore type checking for private member aws-api-gateway-client for now

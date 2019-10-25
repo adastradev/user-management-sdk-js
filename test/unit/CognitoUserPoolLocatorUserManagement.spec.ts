@@ -23,12 +23,12 @@ describe('CognitoUserPoolLocatorUserManagement', () => {
       sandbox
         .stub(
           CognitoUserPoolLocatorUserManagement.prototype,
-          'getPoolForUsername',
+          'getPoolForUsername'
         )
         .resolves({
           ClientId: 'clientid',
           IdentityPoolId: 'idpoolid',
-          UserPoolId: 'userpoolid',
+          UserPoolId: 'userpoolid'
         });
 
       const pool = await locator.getPoolForUsername('blah');
@@ -36,7 +36,7 @@ describe('CognitoUserPoolLocatorUserManagement', () => {
       expect(pool).to.deep.equal({
         ClientId: 'clientid',
         IdentityPoolId: 'idpoolid',
-        UserPoolId: 'userpoolid',
+        UserPoolId: 'userpoolid'
       } as ICognitoUserPoolApiModel);
     });
   });

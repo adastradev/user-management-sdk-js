@@ -31,10 +31,10 @@ describe('AuthManager', () => {
     const discovery = new DiscoverySdk(
       process.env.DISCOVERY_SERVICE || process.env.DISCOVERY_SERVICE_DEV,
       region,
-      process.env.DEFAULT_STAGE || 'dev',
+      process.env.DEFAULT_STAGE || 'dev'
     );
     process.env.USER_MANAGEMENT_URI = await discovery.lookupService(
-      'user-management',
+      'user-management'
     );
   });
 
@@ -47,12 +47,12 @@ describe('AuthManager', () => {
     (auth as any).minutesBeforeAllowRefresh = 0;
     await auth.signIn(
       process.env.ASTRA_CLOUD_USERNAME,
-      process.env.ASTRA_CLOUD_PASSWORD,
+      process.env.ASTRA_CLOUD_PASSWORD
     );
     await auth.getAndSetEnvironmentCredentials();
     const envCredsOne = {
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
     };
 
     await sleep(1000);
@@ -61,7 +61,7 @@ describe('AuthManager', () => {
     await auth.getAndSetEnvironmentCredentials();
     const envCredsTwo = {
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
     };
     expect(envCredsOne).not.deep.equal(envCredsTwo);
   });
@@ -70,7 +70,7 @@ describe('AuthManager', () => {
     const auth = new AuthManager(locator, region);
     await auth.signIn(
       process.env.ASTRA_CLOUD_USERNAME,
-      process.env.ASTRA_CLOUD_PASSWORD,
+      process.env.ASTRA_CLOUD_PASSWORD
     );
     (auth as any).minutesBeforeAllowRefresh = 0;
     const error = Error('Blah');
@@ -86,7 +86,7 @@ describe('AuthManager', () => {
     const auth = new AuthManager(locator, region);
     await auth.signIn(
       process.env.ASTRA_CLOUD_USERNAME,
-      process.env.ASTRA_CLOUD_PASSWORD,
+      process.env.ASTRA_CLOUD_PASSWORD
     );
     (auth as any).minutesBeforeAllowRefresh = 0;
     const error = Error('Blah');

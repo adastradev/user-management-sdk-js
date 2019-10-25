@@ -5,7 +5,7 @@ import {
     AuthenticationDetails,
     CognitoUser,
     CognitoUserPool,
-    CognitoUserSession,
+    CognitoUserSession
 } from 'amazon-cognito-identity-js';
 const proxy = require('proxy-agent');
 import { GlobalConfigInstance } from 'aws-sdk/lib/config';

@@ -21,13 +21,13 @@ describe('CognitoUserPoolLocatorStatic', () => {
       const locator = new CognitoUserPoolLocatorStatic(
         'userpoolid',
         'clientid',
-        'idpoolid',
+        'idpoolid'
       );
       const pool = await locator.getPoolForUsername('blah');
       expect(pool).to.deep.equal({
         ClientId: 'clientid',
         IdentityPoolId: 'idpoolid',
-        UserPoolId: 'userpoolid',
+        UserPoolId: 'userpoolid'
       } as ICognitoUserPoolApiModel);
     });
   });
