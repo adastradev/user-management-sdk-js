@@ -4,12 +4,12 @@
   "description": "Astra user management SDK for JavaScript in the browser and Node.js",
   "main": "dist/index.js",
   "scripts": {
-    "build": "./node_modules/.bin/tsc",
+    "build": "tsc",
     "test": "nyc mocha --timeout 99999 'test/{unit,integration}/**/*.spec.ts'",
-    "unit-test": "nyc mocha --timeout 99999 test/unit/**/*.spec.ts",
+    "test:unit": "nyc mocha test/unit/**/*.spec.ts",
     "test:coveralls": "cat coverage/lcov.info | coveralls",
-    "system-test": "mocha --timeout 99999 test/system/**/*.spec.ts",
-    "lint": "tslint {source,test}/**/*.ts"
+    "test:system": "mocha --timeout 99999 test/system/**/*.spec.ts",
+    "lint": "tslint --project ."
   },
   "repository": {
     "type": "git",
@@ -49,6 +49,8 @@
     "source-map-support": "^0.5.13",
     "ts-node": "^7.0.1",
     "tslint": "^5.20.0",
+    "tslint-config-airbnb": "^5.11.2",
+    "tslint-config-security": "^1.16.0",
     "typescript": "^3.6.4"
   }
 }

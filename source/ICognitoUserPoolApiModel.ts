@@ -1,5 +1,5 @@
 export interface ICognitoUserPoolApiModel {
-    UserPoolId: string;
-    ClientId: string;
-    IdentityPoolId?: string;
+  UserPoolId: string;
+  ClientId: string;
+  IdentityPoolId?: string;
 }
