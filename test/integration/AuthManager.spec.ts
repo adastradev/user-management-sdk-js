@@ -1,4 +1,5 @@
 import { CognitoUserPoolLocatorUserManagement } from '../../source';
+// tslint:disable-next-line:no-duplicate-imports
 import { AuthManager } from '../../source';
 import * as chai from 'chai';
 import * as chaiAsPromised from 'chai-as-promised';
@@ -8,7 +9,7 @@ import nodeFetch from 'node-fetch';
 import { CognitoIdentityCredentials, config } from 'aws-sdk';
 import sleep from '../util/sleep';
 // tslint:disable-next-line: no-string-literal
-global['fetch'] = fetch;
+global['fetch'] = nodeFetch;
 
 chai.use(chaiAsPromised);
 chai.should();
