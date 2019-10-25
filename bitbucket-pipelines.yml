@@ -3,14 +3,16 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: node:8.9.4
+image: node:10
 
 pipelines:
   branches:
     master:
       - step:
           script:
-            - npm install
+            - npm ci
+            - npm run secure
+            - npm run lint
             - npm run build
             - npm test
             - npm run test:coveralls
@@ -21,8 +23,9 @@ pipelines:
     feature/*:
       - step:
           script:
-            - npm install
+            - npm ci
+            - npm run secure
+            - npm run lint
             - npm run build
             - npm test
             - npm run test:coveralls
-

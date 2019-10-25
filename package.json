@@ -9,7 +9,8 @@
     "test:unit": "nyc mocha test/unit/**/*.spec.ts",
     "test:coveralls": "cat coverage/lcov.info | coveralls",
     "test:system": "mocha --timeout 99999 test/system/**/*.spec.ts",
-    "lint": "tslint --project ."
+    "lint": "tslint --project .",
+    "secure": "gulp secure"
   },
   "repository": {
     "type": "git",
@@ -43,9 +44,12 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "coveralls": "^3.0.7",
+    "gulp": "^4.0.2",
+    "gulp-snyk": "^0.1.1",
     "mocha": "^5.2.0",
     "nyc": "^14.1.1",
     "sinon": "^7.5.0",
+    "snyk": "^1.239.0",
     "source-map-support": "^0.5.13",
     "ts-node": "^7.0.1",
     "tslint": "^5.20.0",
