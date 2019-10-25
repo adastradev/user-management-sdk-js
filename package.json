@@ -1,6 +1,6 @@
 {
   "name": "@adastradev/user-management-sdk",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Astra user management SDK for JavaScript in the browser and Node.js",
   "main": "dist/index.js",
   "scripts": {
@@ -21,6 +21,7 @@
     "Andrew Regier <aregier@regiernet.com>"
   ],
   "license": "MIT",
+  "files": ["/dist"],
   "bugs": {
     "url": "https://github.com/adastradev/user-management-sdk-js/issues"
   },
