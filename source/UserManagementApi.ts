@@ -23,15 +23,15 @@ export class UserManagementApi {
     serviceEndpointUri: string,
     region: string,
     credentials: ApiCredentials,
-    apigClient?: any,
+    apigClient?: any
   ) {
     if (apigClient) {
       if (credentials.type === 'BearerToken') {
         const tokenCreds = credentials as BearerTokenCredentials;
         this.additionalParams = {
           headers: {
-            Authorization: `Bearer ${tokenCreds.idToken}`,
-          },
+            Authorization: `Bearer ${tokenCreds.idToken}`
+          }
         };
       }
       this.apigClient = apigClient;
@@ -41,7 +41,7 @@ export class UserManagementApi {
           region,
           accessKey: '',
           invokeUrl: serviceEndpointUri,
-          secretKey: '',
+          secretKey: ''
         });
       } else if (credentials.type === 'IAM') {
         const iamCreds = credentials as IAMCredentials;
@@ -49,20 +49,20 @@ export class UserManagementApi {
           region,
           accessKey: iamCreds.accessKeyId,
           invokeUrl: serviceEndpointUri,
-          secretKey: iamCreds.secretAccessKey,
+          secretKey: iamCreds.secretAccessKey
         });
       } else if (credentials.type === 'BearerToken') {
         const tokenCreds = credentials as BearerTokenCredentials;
         this.additionalParams = {
           headers: {
-            Authorization: `Bearer ${tokenCreds.idToken}`,
-          },
+            Authorization: `Bearer ${tokenCreds.idToken}`
+          }
         };
         this.apigClient = apigClientFactory.newClient({
           region,
           accessKey: '',
           invokeUrl: serviceEndpointUri,
-          secretKey: '',
+          secretKey: ''
         });
       } else {
         throw Error('Unsupported credential type in UserManagementApi');
@@ -82,7 +82,7 @@ export class UserManagementApi {
       pathTemplate,
       method,
       additionalParams,
-      body,
+      body
     );
   }
 
@@ -98,7 +98,7 @@ export class UserManagementApi {
       pathTemplate,
       method,
       additionalParams,
-      body,
+      body
     );
   }
 
@@ -114,7 +114,7 @@ export class UserManagementApi {
       pathTemplate,
       method,
       this.additionalParams,
-      body,
+      body
     );
   }
 
@@ -123,7 +123,7 @@ export class UserManagementApi {
     userName: string,
     password: string,
     firstName: string,
-    lastName: string,
+    lastName: string
   ) {
     const params = {};
     const pathTemplate = '/admin/users';
@@ -136,7 +136,7 @@ export class UserManagementApi {
       pathTemplate,
       method,
       additionalParams,
-      body,
+      body
     );
   }
 
@@ -144,7 +144,7 @@ export class UserManagementApi {
     tenantName: string,
     userName: string,
     firstName: string,
-    lastName: string,
+    lastName: string
   ) {
     const params = {};
     const pathTemplate = '/tenant/register';
@@ -157,7 +157,7 @@ export class UserManagementApi {
       pathTemplate,
       method,
       additionalParams,
-      body,
+      body
     );
   }
 
@@ -173,7 +173,7 @@ export class UserManagementApi {
       pathTemplate,
       method,
       additionalParams,
-      body,
+      body
     );
   }
 
@@ -189,7 +189,7 @@ export class UserManagementApi {
       pathTemplate,
       method,
       additionalParams,
-      body,
+      body
     );
   }
 
@@ -204,7 +204,7 @@ export class UserManagementApi {
       pathTemplate,
       method,
       this.additionalParams,
-      body,
+      body
     );
   }
 
@@ -221,7 +221,7 @@ export class UserManagementApi {
       pathTemplate,
       method,
       this.additionalParams,
-      body,
+      body
     );
   }
 }

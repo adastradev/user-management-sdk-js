@@ -11,7 +11,7 @@ export class CognitoUserPoolLocatorUserManagement
   constructor(private region: string) {}
 
   public getPoolForUsername(
-    userName: string,
+    userName: string
   ): Promise<ICognitoUserPoolApiModel> {
     return new Promise(
       // tslint:disable-next-line:ter-prefer-arrow-callback
@@ -19,7 +19,7 @@ export class CognitoUserPoolLocatorUserManagement
         const api = new UserManagementApi(
           process.env.USER_MANAGEMENT_URI,
           this.region,
-          { type: 'None' },
+          { type: 'None' }
         );
 
         try {
@@ -27,13 +27,13 @@ export class CognitoUserPoolLocatorUserManagement
           const result: ICognitoUserPoolApiModel = {
             ClientId: response.data.cognito_app_client_id,
             IdentityPoolId: response.data.cognito_identity_pool_id,
-            UserPoolId: response.data.cognito_user_pool_id,
+            UserPoolId: response.data.cognito_user_pool_id
           };
           resolve(result);
         } catch (error) {
           reject(error);
         }
-      }.bind(this),
+      }.bind(this)
     );
   }
 }

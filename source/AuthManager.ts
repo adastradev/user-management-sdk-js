@@ -21,7 +21,7 @@ export function configureAwsProxy(awsConfig: GlobalConfigInstance) {
       proxyUri = process.env.HTTPS_PROXY;
     }
     awsConfig.update({
-      httpOptions: { agent: proxy(proxyUri) },
+      httpOptions: { agent: proxy(proxyUri) }
     });
   }
 }
@@ -38,7 +38,7 @@ export class AuthManager {
 
   constructor(
         locator: ICognitoUserPoolLocator,
-        region: string,
+        region: string
     ) {
     this.locator = locator;
     this.region = region;
@@ -63,12 +63,12 @@ export class AuthManager {
       // configure the authentication credentials
       const authenticationData = {
         Password: password,
-        Username: email,
+        Username: email
       };
       // create object with user/pool combined
       const userData = {
         Pool: userPool,
-        Username: email,
+        Username: email
       };
       // init Cognito auth details with auth data
       const authenticationDetails = new AuthenticationDetails(authenticationData);
@@ -101,12 +101,12 @@ export class AuthManager {
               onSuccess: (result) => {
                 that.cognitoUserSession = result;
                 return resolve(result);
-              },
+              }
             });
           } else {
             return reject(Error('New password is required for the user'));
           }
-        },
+        }
       });
     });
   }
@@ -151,8 +151,8 @@ export class AuthManager {
     return new CognitoIdentityCredentials({
       IdentityPoolId: this.poolData.IdentityPoolId,
       Logins: {
-        [this.authenticatorURI]: tokens.idToken.getJwtToken(),
-      },
+        [this.authenticatorURI]: tokens.idToken.getJwtToken()
+      }
     });
   }
 
@@ -160,7 +160,7 @@ export class AuthManager {
     return {
       accessToken: session.getAccessToken(),
       idToken: session.getIdToken(),
-      refreshToken: session.getRefreshToken(),
+      refreshToken: session.getRefreshToken()
     };
   }
 }

@@ -8,11 +8,11 @@ export class CognitoUserPoolLocatorStatic implements ICognitoUserPoolLocator {
   constructor(
     private userPoolId: string,
     private clientId: string,
-    private identityPoolId: string,
+    private identityPoolId: string
   ) {}
 
   public getPoolForUsername(
-    userName: string,
+    userName: string
   ): Promise<ICognitoUserPoolApiModel> {
     return new Promise(
       // tslint:disable-next-line:ter-prefer-arrow-callback
@@ -20,11 +20,11 @@ export class CognitoUserPoolLocatorStatic implements ICognitoUserPoolLocator {
         const result: ICognitoUserPoolApiModel = {
           ClientId: this.clientId,
           IdentityPoolId: this.identityPoolId,
-          UserPoolId: this.userPoolId,
+          UserPoolId: this.userPoolId
         };
 
         resolve(result);
-      }.bind(this),
+      }.bind(this)
     );
   }
 }
