@@ -124,13 +124,13 @@ export class UserManagementApi {
     password: string,
     firstName: string,
     lastName: string,
-    suppressInviteEmail: boolean = false,
+    suppressInviteEmail: boolean = false
   ) {
     const params = {};
     const pathTemplate = '/admin/users';
     const method = 'POST';
     const additionalParams = {};
-    const body = { userName, password, firstName, lastName, tenant_id: tenantId, suppressInviteEmail };
+    const body = { userName, password, firstName, lastName, suppressInviteEmail, tenant_id: tenantId };
 
     return this.apigClient.invokeApi(
       params,
