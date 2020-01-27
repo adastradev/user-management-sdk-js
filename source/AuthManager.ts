@@ -63,12 +63,12 @@ export class AuthManager {
       // configure the authentication credentials
       const authenticationData = {
         Password: password,
-        Username: email
+        Username: email.toLowerCase()
       };
       // create object with user/pool combined
       const userData = {
         Pool: userPool,
-        Username: email
+        Username: email.toLowerCase()
       };
       // init Cognito auth details with auth data
       const authenticationDetails = new AuthenticationDetails(authenticationData);

@@ -1,4 +1,16 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
 version: v1.13.5
-ignore: {}
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-JS-ELLIPTIC-511941:
+    - '@adastradev/aws-api-gateway-client > webpack > node-libs-browser > crypto-browserify > browserify-sign > elliptic':
+        reason: Waiting for fix
+        expires: '2019-12-25T22:47:16.043Z'
+    - '@adastradev/aws-api-gateway-client > webpack > node-libs-browser > crypto-browserify > create-ecdh > elliptic':
+        reason: Waiting for fix
+        expires: '2019-12-25T22:47:16.043Z'
+  SNYK-JS-KINDOF-537849:
+    - '*':
+        reason: No remediation, dependency of many, many packages
+        expires: 2020-02-26T19:31:14.986Z
 patch: {}

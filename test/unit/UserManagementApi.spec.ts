@@ -120,14 +120,14 @@ describe('UserManagementApi', () => {
 
   describe('createUser', () => {
     it('Should invoke api with correct args', async () => {
-      await api.createUser(tenant_id, userName, password, firstName, lastName);
+      await api.createUser(tenant_id, userName, password, firstName, lastName, true);
       expect(client.invokeApi.calledOnce).to.be.true;
       expect(client.invokeApi.args[0]).to.deep.equal([
         {},
         '/admin/users',
         'POST',
         {},
-        { tenant_id, userName, password, firstName, lastName }
+        { tenant_id, userName, password, firstName, lastName, suppressInviteEmail: true }
       ]);
     });
   });
