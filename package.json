@@ -30,7 +30,7 @@
   "homepage": "https://github.com/adastradev/user-management-sdk-js#readme",
   "dependencies": {
     "@adastradev/aws-api-gateway-client": "^1.0.1",
-    "@adastradev/serverless-discovery-sdk": "^2.1.1",
+    "@adastradev/serverless-discovery-sdk": "^2.1.2",
     "amazon-cognito-identity-js": "^3.2.6",
     "aws-sdk": "^2.645.0",
     "axios": "^0.19.2",
