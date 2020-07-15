@@ -1,13 +1,13 @@
 {
   "name": "@adastradev/user-management-sdk",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Astra user management SDK for JavaScript in the browser and Node.js",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "test": "nyc mocha --timeout 99999 'test/{unit,integration}/**/*.spec.ts'",
     "test:unit": "nyc mocha test/unit/**/*.spec.ts",
-    "test:coveralls": "cat coverage/lcov.info | coveralls",
+    "test:codecov": "cat coverage/lcov.info | codecov",
     "test:system": "mocha --timeout 99999 test/system/**/*.spec.ts",
     "lint": "tslint --project .",
     "secure": "gulp secure"
@@ -46,7 +46,7 @@
     "@types/sinon": "^7.5.2",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "coveralls": "^3.0.11",
+    "codecov": "^3.7.0",
     "gulp": "^4.0.2",
     "gulp-snyk": "^0.1.1",
     "mocha": "^7.1.1",
