@@ -15,7 +15,7 @@ pipelines:
             - npm run lint
             - npm run build
             - npm test
-            - npm run test:coveralls
+            - npm run test:codecov
 
             # Publish package
             - npm publish --access=public
@@ -28,4 +28,4 @@ pipelines:
             - npm run lint
             - npm run build
             - npm test
-            - npm run test:coveralls
+            - npm run test:codecov

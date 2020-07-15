@@ -1,4 +1,5 @@
 # user-management-sdk-js
+[![codecov](https://codecov.io/bb/adastradev/user-management-sdk-js/branch/master/graph/badge.svg?token=hcWKFlEsQ1)](https://codecov.io/bb/adastradev/user-management-sdk-js)
 
 Ad Astra user management SDK for JavaScript in the browser and Node.js
 
