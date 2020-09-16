@@ -18,9 +18,9 @@ pipelines:
             - npm run test:codecov
 
             # Publish package
-            - npm publish --access=public
+            - npm publish --access=public --tag latest
 
-    feature/*:
+    "beta/**":
       - step:
           script:
             - npm ci
@@ -29,3 +29,6 @@ pipelines:
             - npm run build
             - npm test
             - npm run test:codecov
+            - BETA_VERSION="$(node -p "require('./package.json')['version']+'-beta.'+new Date().valueOf()")"
+            - npm version $BETA_VERSION
+            - npm publish --access=restricted --tag beta

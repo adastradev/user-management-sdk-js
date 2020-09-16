@@ -49,7 +49,8 @@ export class UserManagementApi {
           region,
           accessKey: iamCreds.accessKeyId,
           invokeUrl: serviceEndpointUri,
-          secretKey: iamCreds.secretAccessKey
+          secretKey: iamCreds.secretAccessKey,
+          sessionToken: iamCreds.sessionToken
         });
       } else if (credentials.type === 'BearerToken') {
         const tokenCreds = credentials as BearerTokenCredentials;
