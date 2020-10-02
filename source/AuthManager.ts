@@ -48,7 +48,7 @@ export class AuthManager {
     AWS.config.region = region;
   }
 
-  public signIn = (email: string, password: string, newPassword: string = ''): Promise<CognitoUserSession> => {
+  public signIn (email: string, password: string, newPassword: string = ''): Promise<CognitoUserSession> {
     return new Promise(async (resolve, reject) => {
       // get the pool data from the response
       console.log(`Signing into AWS Cognito`);
@@ -147,7 +147,7 @@ export class AuthManager {
     console.log('Successfully set fresh environment IAM credentials.');
   }
 
-  private buildCognitoIdentityCredentials = (tokens): CognitoIdentityCredentials => {
+  private buildCognitoIdentityCredentials(tokens): CognitoIdentityCredentials {
     return new CognitoIdentityCredentials({
       IdentityPoolId: this.poolData.IdentityPoolId,
       Logins: {
@@ -156,7 +156,7 @@ export class AuthManager {
     });
   }
 
-  private getTokens = (session) => {
+  private getTokens(session) {
     return {
       accessToken: session.getAccessToken(),
       idToken: session.getIdToken(),
