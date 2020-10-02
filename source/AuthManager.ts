@@ -48,7 +48,7 @@ export class AuthManager {
     AWS.config.region = region;
   }
 
-  public signIn (email: string, password: string, newPassword: string = ''): Promise<CognitoUserSession> {
+  public signIn(email: string, password: string, newPassword: string = ''): Promise<CognitoUserSession> {
     return new Promise(async (resolve, reject) => {
       // get the pool data from the response
       console.log(`Signing into AWS Cognito`);
