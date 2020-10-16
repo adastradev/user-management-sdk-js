@@ -20,6 +20,16 @@ pipelines:
             # Publish package
             - npm publish --access=public --tag latest
 
+    "feature/**":
+      - step:
+          script:
+            - npm ci
+            - npm run secure
+            - npm run lint
+            - npm run build
+            - npm test
+            - npm run test:codecov
+
     "beta/**":
       - step:
           script:
@@ -31,4 +41,4 @@ pipelines:
             - npm run test:codecov
             - BETA_VERSION="$(node -p "require('./package.json')['version']+'-beta.'+new Date().valueOf()")"
             - npm version $BETA_VERSION
-            - npm publish --access=restricted --tag beta
+            - npm publish --access=public --tag beta
